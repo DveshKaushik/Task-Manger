@@ -54,6 +54,7 @@ function TaskForm() {
       <br /><br />
 
       <select
+      
         value={priority}
         onChange={(e) => setPriority(e.target.value)}
       >
