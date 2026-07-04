@@ -1,7 +1,7 @@
 import { useContext } from "react";
+import { DragDropContext } from "@hello-pangea/dnd";
 import { TaskContext } from "../context/TaskContext";
 import TaskColumn from "./TaskColumn";
-import { DragDropContext } from "@hello-pangea/dnd";
 
 function TaskList() {
   const {
@@ -11,7 +11,18 @@ function TaskList() {
     selectedPriority,
     sortBy,
     moveTask,
+    isLoading,
+    error,
   } = useContext(TaskContext);
+
+  // Add loading and error checks here
+  if (isLoading) {
+    return <p>Loading tasks...</p>;
+  }
+
+  if (error) {
+    return <p className="error-message">{error}</p>;
+  }
 
   const priorityOrder = {
     High: 3,
@@ -59,15 +70,23 @@ function TaskList() {
   const doneTasks = filteredTasks.filter(
     (task) => task.status === "Done"
   );
-  const handleDragEnd = (result) => {
-    const { destination, draggableId } = result;
 
-    if (!destination) return;
+  const handleDragEnd = (result) => {
+    const { destination, source, draggableId } = result;
+
+    if (!destination) {
+      return;
+    }
+
+    if (
+      destination.droppableId === source.droppableId &&
+      destination.index === source.index
+    ) {
+      return;
+    }
 
     moveTask(draggableId, destination.droppableId);
   };
-
-
 
   return (
     <DragDropContext onDragEnd={handleDragEnd}>

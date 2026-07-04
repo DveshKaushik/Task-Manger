@@ -1,0 +1,13 @@
+{
+  "tasks": [
+    {
+      "title": "1",
+      "description": "w",
+      "priority": "High",
+      "status": "In Progress",
+      "createdAt": "2026-07-04T11:02:58.381Z",
+      "id": "jmJU-i1992A"
+    }
+  ],
+  "$schema": "./node_modules/json-server/schema.json"
+}
