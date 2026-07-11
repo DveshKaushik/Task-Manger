@@ -1,7 +1,13 @@
 import AuthPage from "./components/AuthPage";
 import { useAuth } from "./context/AuthContext";
 
-// Keep your other component imports.
+import TaskStats from "./components/TaskStats";
+import TaskForm from "./components/TaskForm";
+import SearchBar from "./components/SearchBar";
+import PriorityFilter from "./components/PriorityFilter";
+import SortTasks from "./components/SortTasks";
+import TaskList from "./components/TaskList";
+import ThemeToggle from "./components/ThemeToggle";
 
 function App() {
   const {
@@ -13,17 +19,8 @@ function App() {
 
   if (authLoading) {
     return (
-      <main style={{ padding: "40px" }}>
+      <main className="auth-status">
         <h2>Checking authentication...</h2>
-      </main>
-    );
-  }
-
-  if (authError && !currentUser) {
-    return (
-      <main style={{ padding: "40px" }}>
-        <h2>Authentication configuration error</h2>
-        <p>{authError}</p>
       </main>
     );
   }
@@ -40,10 +37,18 @@ function App() {
           <p>{currentUser.email}</p>
         </div>
 
-        <button type="button" onClick={logout}>
-          Logout
-        </button>
+        <div className="header-actions">
+          <ThemeToggle />
+
+          <button type="button" onClick={logout}>
+            Logout
+          </button>
+        </div>
       </header>
+
+      {authError && (
+        <p className="error-message">{authError}</p>
+      )}
 
       <TaskStats />
       <TaskForm />

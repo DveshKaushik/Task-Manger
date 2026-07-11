@@ -1,20 +1,29 @@
 import { useContext, useState } from "react";
 import { TaskContext } from "../context/TaskContext";
+import { useAuth } from "../context/AuthContext";
 
 function TaskForm() {
   const { addTask } = useContext(TaskContext);
+  const { currentUser } = useAuth();
 
-  // All Hooks must be inside TaskForm
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [priority, setPriority] = useState("Medium");
   const [dueDate, setDueDate] = useState("");
+  const [submitting, setSubmitting] = useState(false);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
 
+    console.log("Add Task clicked");
+
     if (!title.trim()) {
-      alert("Title is required");
+      alert("Task title is required");
+      return;
+    }
+
+    if (!currentUser) {
+      alert("Please log in first");
       return;
     }
 
@@ -25,14 +34,24 @@ function TaskForm() {
       status: "Todo",
       dueDate,
       createdAt: new Date().toISOString(),
+      userId: currentUser.uid,
     };
 
-    await addTask(newTask);
+    try {
+      setSubmitting(true);
 
-    setTitle("");
-    setDescription("");
-    setPriority("Medium");
-    setDueDate("");
+      await addTask(newTask);
+
+      setTitle("");
+      setDescription("");
+      setPriority("Medium");
+      setDueDate("");
+    } catch (error) {
+      console.error("Could not add task:", error);
+      alert("Could not add task. Check the console and JSON Server.");
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   return (
@@ -67,7 +86,9 @@ function TaskForm() {
         onChange={(event) => setDueDate(event.target.value)}
       />
 
-      <button type="submit">Add Task</button>
+      <button type="submit" disabled={submitting}>
+        {submitting ? "Adding..." : "Add Task"}
+      </button>
     </form>
   );
 }

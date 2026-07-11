@@ -11,9 +11,12 @@ import {
   removeTask,
 } from "../services/taskApi";
 
+import { useAuth } from "./AuthContext";
+
 export const TaskContext = createContext();
 
 export function TaskProvider({ children }) {
+  const { currentUser } = useAuth();
   const [tasks, setTasks] = useState([]);
 
   const [searchTerm, setSearchTerm] = useState("");
@@ -26,26 +29,31 @@ export function TaskProvider({ children }) {
 
   // GET /tasks
   useEffect(() => {
+    if (!currentUser) {
+      setTasks([]);
+      return;
+    }
+
     const loadTasks = async () => {
       try {
         setIsLoading(true);
-        setError("");
 
         const response = await getTasks();
 
-        setTasks(response.data);
-      } catch (requestError) {
-        console.error(requestError);
-        setError(
-          "Could not load tasks. Make sure JSON Server is running."
+        const userTasks = response.data.filter(
+          (task) => task.userId === currentUser.uid
         );
+
+        setTasks(userTasks);
+      } catch (error) {
+        console.error(error);
       } finally {
         setIsLoading(false);
       }
     };
 
     loadTasks();
-  }, []);
+  }, [currentUser]);
 
   // POST /tasks
   const addTask = async (task) => {
