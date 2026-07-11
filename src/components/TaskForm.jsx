@@ -1,6 +1,9 @@
 import { useState, useContext } from "react";
 import { TaskContext } from "../context/TaskContext";
 
+
+const [dueDate, setDueDate] = useState("");
+
 function TaskForm() {
   const { addTask } = useContext(TaskContext);
 
