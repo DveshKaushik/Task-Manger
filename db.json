@@ -4,7 +4,7 @@
       "title": "1",
       "description": "w",
       "priority": "High",
-      "status": "In Progress",
+      "status": "Todo",
       "createdAt": "2026-07-04T11:02:58.381Z",
       "id": "jmJU-i1992A"
     },
@@ -20,7 +20,7 @@
       "title": "3",
       "description": "eeee",
       "priority": "High",
-      "status": "Todo",
+      "status": "In Progress",
       "createdAt": "2026-07-05T07:25:01.030Z",
       "id": "vTF6AZb-5gY"
     }

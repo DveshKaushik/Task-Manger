@@ -1,3 +1,34 @@
+:root {
+  --page-background: #f4f6f8;
+  --surface-background: #ffffff;
+  --column-background: #edf0f3;
+
+  --primary-text: #1c1c1c;
+  --secondary-text: #666666;
+
+  --border-color: #d4d7dc;
+  --button-background: #242424;
+  --button-text: #ffffff;
+
+  --shadow:
+    0 4px 15px rgba(0, 0, 0, 0.08);
+}
+
+[data-theme="dark"] {
+  --page-background: #161819;
+  --surface-background: #242627;
+  --column-background: #1d1f20;
+
+  --primary-text: #f3f3f3;
+  --secondary-text: #b5b5b5;
+
+  --border-color: #444748;
+  --button-background: #eeeeee;
+  --button-text: #171717;
+
+  --shadow:
+    0 4px 15px rgba(0, 0, 0, 0.35);
+} 
 * {
   margin: 0;
   padding: 0;
@@ -5,25 +36,37 @@
 }
 
 body {
-  background: #f5f7fb;
+  margin: 0;
+  background: var(--page-background);
+  color: var(--primary-text);
   font-family: Arial, sans-serif;
+  transition:
+    background-color 0.25s ease,
+    color 0.25s ease;
 }
-
 .app {
-  max-width: 1200px;
-  margin: auto;
-  padding: 2rem;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 32px;
 }
-
+.app-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+  margin-bottom: 24px;
+}
 h1 {
   margin-bottom: 2rem;
 }
 
-form {
-  background: white;
-  padding: 1rem;
-  border-radius: 10px;
-  margin-bottom: 2rem;
+form,
+.task-card,
+.stat-card,
+.completion-card {
+  background: var(--surface-background);
+  color: var(--primary-text);
+  box-shadow: var(--shadow);
 }
 
 input,
@@ -164,10 +207,28 @@ button {
 }
 
 .task-column {
-  background: #f1f3f5;
-  padding: 16px;
-  border-radius: 12px;
-  min-height: 300px;
+  background: var(--column-background);
+}
+
+input,
+textarea,
+select {
+  background: var(--surface-background);
+  color: var(--primary-text);
+  border: 1px solid var(--border-color);
+}
+
+button {
+  background: var(--button-background);
+  color: var(--button-text);
+  border: none;
+}
+
+.task-description,
+.task-status,
+.task-due,
+.stat-card span {
+  color: var(--secondary-text);
 }
 
 .task-column h2 {
@@ -182,6 +243,108 @@ button {
   margin: 16px 0;
   color: #dc3545;
   font-weight: 600;
+}
+
+
+.task-stats {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.stat-card {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+
+  padding: 18px;
+  background: white;
+  border-radius: 10px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+}
+
+.stat-card span {
+  color: #666;
+  font-size: 14px;
+}
+
+.stat-card strong {
+  font-size: 26px;
+}
+
+.completion-card {
+  grid-column: 1 / -1;
+  padding: 18px;
+  background: white;
+  border-radius: 10px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+}
+
+.completion-header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.progress-track {
+  height: 10px;
+  overflow: hidden;
+  background: #e9ecef;
+  border-radius: 20px;
+}
+
+.progress-value {
+  height: 100%;
+  background: #198754;
+  border-radius: 20px;
+  transition: width 0.3s ease;
+}
+.auth-page {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  padding: 20px;
+}
+
+.auth-form {
+  width: 100%;
+  max-width: 420px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 28px;
+}
+
+.auth-form button {
+  padding: 12px 16px;
+  cursor: pointer;
+}
+
+.theme-toggle {
+  padding: 10px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+@media (max-width: 600px) {
+  .app-header {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+}
+
+@media (max-width: 900px) {
+  .task-stats {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 500px) {
+  .task-stats {
+    grid-template-columns: 1fr;
+  }
 }
 
 
